@@ -19,8 +19,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from timm.data import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD
-from timm.models.layers import DropPath, to_2tuple, trunc_normal_
-from timm.models.registry import register_model
+from models.layers import DropPath, trunc_normal_
+from models.registry import register_model
 import math
 import numpy as np
 

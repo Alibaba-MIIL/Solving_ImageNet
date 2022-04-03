@@ -20,9 +20,9 @@ import torch.nn.parallel
 from collections import OrderedDict
 from contextlib import suppress
 
-from timm.models import create_model, apply_test_time_pool, load_checkpoint, is_model, list_models
+from models import create_model, apply_test_time_pool, load_checkpoint, is_model, list_models
 from timm.data import create_dataset, create_loader, resolve_data_config, RealLabelsImagenet
-from timm.utils import accuracy, AverageMeter, natural_key, setup_default_logging, set_jit_fuser
+from timm.utils import accuracy, AverageMeter, natural_key, setup_default_logging
 
 has_apex = False
 try:
@@ -133,9 +133,6 @@ def validate(args):
         _logger.info('Validating in mixed precision with NVIDIA APEX AMP.')
     else:
         _logger.info('Validating in float32. AMP not enabled.')
-
-    if args.fuser:
-        set_jit_fuser(args.fuser)
 
     # create model
     model = create_model(

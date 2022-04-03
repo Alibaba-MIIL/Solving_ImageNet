@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 
 from timm.data import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD
-from timm.models.registry import register_model
+from models.registry import register_model
 from .helpers import build_model_with_cfg, checkpoint_seq
 from .layers import SelectAdaptivePool2d
 

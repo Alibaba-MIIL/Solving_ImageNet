@@ -12,7 +12,7 @@ import logging
 import numpy as np
 import torch
 
-from timm.models import create_model, apply_test_time_pool
+from models import create_model, apply_test_time_pool
 from timm.data import ImageDataset, create_loader, resolve_data_config
 from timm.utils import AverageMeter, setup_default_logging
 

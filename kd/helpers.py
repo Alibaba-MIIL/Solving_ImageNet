@@ -3,11 +3,6 @@
 Hacked together by / Copyright 2020 Ross Wightman
 """
 import logging
-import os
-import math
-from collections import OrderedDict
-from copy import deepcopy
-from typing import Any, Callable, Optional, Tuple
 
 import torch
 import torch.nn as nn
@@ -213,3 +208,21 @@ def calc_abn_activation(ABN_layer):
         elif ABN_layer.activation == "elu":
             activation = nn.ELU(alpha=ABN_layer.activation_param, inplace=True)
     return activation
+
+def InplacABN_to_ABN(module: nn.Module) -> nn.Module:
+    from models.layers import InplaceAbn
+    from inplace_abn import ABN
+    # convert all InplaceABN layer to bit-accurate ABN layers.
+    if isinstance(module, InplaceAbn):
+        module_new = ABN(module.num_features, activation=module.act_name,
+                         activation_param=module.act_param)
+        for key in module.state_dict():
+            module_new.state_dict()[key].copy_(module.state_dict()[key])
+        module_new.training = module.training
+        module_new.weight.data = module_new.weight.abs() + module_new.eps
+        return module_new
+    for name, child in reversed(module._modules.items()):
+        new_child = InplacABN_to_ABN(child)
+        if new_child != child:
+            module._modules[name] = new_child
+    return module

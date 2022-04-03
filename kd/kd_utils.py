@@ -1,8 +1,6 @@
-import torch
 import torch.nn as nn
-from timm import create_model
-from timm.models.tresnet_v2 import InplacABN_to_ABN
-from timm.utils.kd.helpers import fuse_bn2d_bn1d_abn
+from models.factory import create_model
+from kd.helpers import fuse_bn2d_bn1d_abn, InplacABN_to_ABN
 import torchvision.transforms as T
 
 
