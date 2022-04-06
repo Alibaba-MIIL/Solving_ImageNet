@@ -11,7 +11,8 @@ class build_kd_model(nn.Module):
         model_kd = create_model(
             model_name=args.kd_model_name,
             checkpoint_path=args.kd_model_path,
-            pretrained=False,
+            # pretrained=False,
+            pretrained=args.kd_model_path is None,
             num_classes=args.num_classes,
             in_chans=3)
 
@@ -19,12 +20,13 @@ class build_kd_model(nn.Module):
         model_kd = InplacABN_to_ABN(model_kd)
         model_kd = fuse_bn2d_bn1d_abn(model_kd)
         self.model = model_kd.cuda().eval()
-        self.mean_model_kd = self.model.default_cfg['mean']
-        self.std_model_kd = self.model.default_cfg['std']
+        self.mean_model_kd = model_kd.default_cfg['mean']
+        self.std_model_kd = model_kd.default_cfg['std']
 
-    def normalize_input(self, input, model):
-        mean_student = model.default_cfg['mean']
-        std_student = model.default_cfg['std']
+    # handling different normalization of teacher and student
+    def normalize_input(self, input, student_model):
+        mean_student = student_model.default_cfg['mean']
+        std_student = student_model.default_cfg['std']
 
         input_kd = input
         if mean_student != self.mean_model_kd or std_student != self.std_model_kd:

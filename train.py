@@ -30,13 +30,15 @@ import torchvision.utils
 from torch.nn.parallel import DistributedDataParallel as NativeDDP
 
 from timm.data import create_dataset, create_loader, resolve_data_config, Mixup, FastCollateMixup, AugMixDataset
-from models import create_model, safe_model_name, resume_checkpoint, load_checkpoint, \
-    convert_splitbn_model, model_parameters
 from timm.utils import *
 from timm.loss import *
 from timm.optim import create_optimizer_v2, optimizer_kwargs
 from timm.scheduler import create_scheduler
 from timm.utils import ApexScaler, NativeScaler
+
+from models import create_model, safe_model_name, resume_checkpoint, load_checkpoint, \
+    convert_splitbn_model, model_parameters
+from utils.checkpoint_saver import CheckpointSaverUSI
 from kd.kd_utils import build_kd_model
 
 try:
@@ -305,7 +307,7 @@ parser.add_argument('--log-wandb', action='store_true', default=False,
 parser.add_argument('--kd_model_path', default=None, type=str)
 parser.add_argument('--kd_model_name', default=None, type=str)
 parser.add_argument('--alpha_kd', default=5, type=float)
-
+parser.add_argument('--use_kd_only_loss', action='store_true', default=False)
 
 def _parse_args():
     # Do we have a config file to parse?
@@ -615,7 +617,7 @@ def main():
             ])
         output_dir = get_outdir(args.output if args.output else './output/train', exp_name)
         decreasing = True if eval_metric == 'loss' else False
-        saver = CheckpointSaver(
+        saver = CheckpointSaverUSI(
             model=model, optimizer=optimizer, args=args, model_ema=model_ema, amp_scaler=loss_scaler,
             checkpoint_dir=output_dir, recovery_dir=output_dir, decreasing=decreasing, max_history=args.checkpoint_hist)
         with open(os.path.join(output_dir, 'args.yaml'), 'w') as f:
@@ -638,28 +640,35 @@ def main():
                 distribute_bn(model, args.world_size, args.dist_bn == 'reduce')
 
             eval_metrics = validate(model, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast)
+            eval_metrics_unite=eval_metrics
 
+            ema_eval_metrics = None
             if model_ema is not None and not args.model_ema_force_cpu:
                 if args.distributed and args.dist_bn in ('broadcast', 'reduce'):
                     distribute_bn(model_ema, args.world_size, args.dist_bn == 'reduce')
                 ema_eval_metrics = validate(
                     model_ema.module, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast,
                     log_suffix=' (EMA)')
-                eval_metrics = ema_eval_metrics
+                if ema_eval_metrics[eval_metric] > eval_metrics[eval_metric]: # choose the best model
+                    eval_metrics_unite = ema_eval_metrics
 
             if lr_scheduler is not None:
                 # step LR for next epoch
-                lr_scheduler.step(epoch + 1, eval_metrics[eval_metric])
+                lr_scheduler.step(epoch + 1, eval_metrics_unite[eval_metric])
 
             if output_dir is not None:
                 update_summary(
-                    epoch, train_metrics, eval_metrics, os.path.join(output_dir, 'summary.csv'),
+                    epoch, train_metrics, eval_metrics_unite, os.path.join(output_dir, 'summary.csv'),
                     write_header=best_metric is None, log_wandb=args.log_wandb and has_wandb)
 
             if saver is not None:
                 # save proper checkpoint with eval metric
                 save_metric = eval_metrics[eval_metric]
-                best_metric, best_epoch = saver.save_checkpoint(epoch, metric=save_metric)
+                if ema_eval_metrics:
+                    save_metric_ema = ema_eval_metrics[eval_metric]
+                else:
+                    save_metric_ema=-1
+                best_metric, best_epoch = saver.save_checkpoint(epoch, metric=save_metric,metric_ema=save_metric_ema)
 
     except KeyboardInterrupt:
         pass
@@ -701,18 +710,22 @@ def train_one_epoch(
             output = model(input)
             loss = loss_fn(output, target)
 
+            # KD logic
             if model_KD is not None:
-                # student probability
+                # student probability calculation
                 prob_s = F.log_softmax(output, dim=-1)
 
-                # teacher probability
+                # teacher probability calculation
                 with torch.no_grad():
                     input_kd = model_KD.normalize_input(input, model)
                     out_t = model_KD.model(input_kd.detach())
                     prob_t = F.softmax(out_t, dim=-1)
 
                 # adding KL loss
-                loss += args.alpha_kd * F.kl_div(prob_s, prob_t, reduction='batchmean')
+                if not args.use_kd_only_loss:
+                    loss += args.alpha_kd * F.kl_div(prob_s, prob_t, reduction='batchmean')
+                else: # only kid
+                    loss = args.alpha_kd * F.kl_div(prob_s, prob_t, reduction='batchmean')
 
         if not args.distributed:
             losses_m.update(loss.item(), input.size(0))

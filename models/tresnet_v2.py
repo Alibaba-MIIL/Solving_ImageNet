@@ -27,7 +27,8 @@ def _cfg(url='', **kwargs):
 
 
 default_cfgs = {
-    'tresnet_l_v2': _cfg()
+    'tresnet_l_v2': _cfg(
+        url='https://miil-public-eu.oss-eu-central-1.aliyuncs.com/model-zoo/USI/tresnet_l_v2_83_9')
 }
 
 def IABN2Float(module: nn.Module) -> nn.Module:

@@ -1,0 +1,18 @@
+- loading KD model, line 377
+    model_KD = build_kd_model(args)
+
+-  KD logic, line 714
+    # KD logic
+    if model_KD is not None:
+
+- line 652. choose the top metric, instead of EMA only
+if ema_eval_metrics[eval_metric] > eval_metrics[eval_metric]: # choose the best model
+    eval_metrics_unite = ema_eval_metrics
+
+- created new saver class, CheckpointSaverUSI.
+CheckpointSaverUSI solves two issues:
+1) remove saving optimizer status, which causes problems if directory structure is changed
+save_state['state_dict'] = get_state_dict(self.model_ema, self.unwrap_fn)
+2) save the correct model (EMA vs regular)
+
+- add tresnet_l_v2 and volo models
