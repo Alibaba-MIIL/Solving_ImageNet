@@ -142,6 +142,12 @@ def validate(args):
         in_chans=3,
         global_pool=args.gp,
         scriptable=args.torchscript)
+    model.cpu().eval()
+    from kd.helpers import InplacABN_to_ABN,fuse_bn2d_bn1d_abn
+    model = InplacABN_to_ABN(model)
+    model = fuse_bn2d_bn1d_abn(model)
+
+
     if args.num_classes is None:
         assert hasattr(model, 'num_classes'), 'Model must have `num_classes` attr if not set on cmd line/config.'
         args.num_classes = model.num_classes
