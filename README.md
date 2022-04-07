@@ -15,13 +15,13 @@ Since USI accepts any backbone and trains it to top results, it also enables to 
 <p align="center">
  <table class="tg">
    <tr>
-    <td class="tg-c3ow"><img src="./pics/pic1.png" align="center" width="600""></td>
+    <td class="tg-c3ow"><img src="./pics/pic1.png" align="center" width="700""></td>
   </tr>
 </table>
 </p>
 
-## How to Training on ImageNet with USI scheme
-USI scheme does not require hyper-parameter tuning. The base training configuration works well for any backbone.
+## How to Train on ImageNet with USI scheme
+The proposed USI scheme does not require hyper-parameter tuning. The base training configuration works well for any backbone.
 All the results presented in the paper are fully reproducible.
 
 An example code - training ResNet50 model with USI:
@@ -37,6 +37,19 @@ Some additional degrees of freedom that might be usefull:
 - Adjusting the batch size (defualt - 128): ```--batch-size=...```
 - Choosing a different teacher (default - tresnet_l_v2): ```--kd_model_name=...```
 - Choosing pretrain weights for the teacher (if none are given, we are using the default pretrain weights): ```--kd_model_path=...```
+- Training for more epochs (default - 300): ```--epochs=...```
+
+## Speed-Accuracy Comparisons
+Our unified scheme allows us to perform methodical speed-accuracy comparisons, and identify efficient modern backbones on GPU and CPU
+
+<p align="center">
+ <table class="tg">
+   <tr>
+    <td class="tg-c3ow"><img src="./pics/pic3.png" align="center" width="700""></td>
+  </tr>
+</table>
+</p>
+
 
 ## Acknowledgements
 
