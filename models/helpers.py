@@ -298,7 +298,7 @@ def load_pretrained(
                 classifier_bias = state_dict[classifier_name + '.bias']
                 state_dict[classifier_name + '.bias'] = classifier_bias[label_offset:]
 
-    model.load_state_dict(state_dict, strict=strict)
+    model.load_state_dict(state_dict, strict=True)
 
 
 def extract_layer(model, layer):

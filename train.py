@@ -375,7 +375,7 @@ def main():
     random_seed(args.seed, args.rank)
 
     model_KD = None
-    if args.kd_model_path is not None:
+    if args.kd_model_name is not None:
         model_KD = build_kd_model(args)
 
     model = create_model(
