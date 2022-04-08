@@ -1,7 +1,7 @@
 # Solving ImageNet: a Unified Scheme for Training any Backbone to Top Results
 
 Official PyTorch Implementation
-<br> [Paper](tbd) |
+<br> [Paper](http://arxiv.org/abs/2204.03475) |
 > Tal Ridnik, Hussam Lawen, Emanuel Ben-Baruch, Asaf Noy<br/> DAMO Academy, Alibaba
 > Group
 
@@ -56,4 +56,14 @@ Our unified scheme allows us to perform methodical speed-accuracy comparisons, a
 The training code is based on the excellent [timm repository](https://github.com/rwightman/pytorch-image-models).
 
 ## Citation
-TBD
+```
+@misc{https://doi.org/10.48550/arxiv.2204.03475,
+  doi = {10.48550/ARXIV.2204.03475},  
+  url = {https://arxiv.org/abs/2204.03475},  
+  author = {Ridnik, Tal and Lawen, Hussam and Ben-Baruch, Emanuel and Noy, Asaf},  
+  keywords = {Computer Vision and Pattern Recognition (cs.CV), Machine Learning (cs.LG), FOS: Computer and information sciences, FOS: Computer and information sciences},  
+  title = {Solving ImageNet: a Unified Scheme for Training any Backbone to Top Results},  
+  publisher = {arXiv},  
+  year = {2022},  
+}  
+```
