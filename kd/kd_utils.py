@@ -25,8 +25,13 @@ class build_kd_model(nn.Module):
 
     # handling different normalization of teacher and student
     def normalize_input(self, input, student_model):
-        mean_student = student_model.default_cfg['mean']
-        std_student = student_model.default_cfg['std']
+        if hasattr(student_model, 'module'):
+            model_s = student_model.module
+        else:
+            model_s = student_model
+
+        mean_student = model_s.default_cfg['mean']
+        std_student = model_s.default_cfg['std']
 
         input_kd = input
         if mean_student != self.mean_model_kd or std_student != self.std_model_kd:

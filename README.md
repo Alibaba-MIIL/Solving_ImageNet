@@ -23,20 +23,20 @@ Since USI accepts any backbone and trains it to top results, it also enables to 
 ## How to Train on ImageNet with USI scheme
 The proposed USI scheme does not require hyper-parameter tuning. The base training configuration works well for any backbone.
 All the results presented in the paper are fully reproducible.
+First download model weights fromm [here](https://miil-public-eu.oss-eu-central-1.aliyuncs.com/model-zoo/USI/tresnet_l_v2_83_9.pth)
 
 An example code - training ResNet50 model with USI:
 ```
-python3 -m torch.distributed.launch --nproc_per_node=8 --nnodes=1 --node_rank=0 train.py  \
+python3 -u -m torch.distributed.launch --nproc_per_node=8 --nnodes=1 --node_rank=0 train.py  \
 /mnt/Imagenet/
 --model=resnet50
 --kd_model_name=tresnet_l_v2
+--kd_model_path=./tresnet_l_v2_83_9.pth
 ```
 
 Some additional degrees of freedom that might be usefull:
 
 - Adjusting the batch size (defualt - 128): ```--batch-size=...```
-- Choosing a different teacher (default - tresnet_l_v2): ```--kd_model_name=...```
-- Choosing pretrain weights for the teacher (if none are given, we are using the default pretrain weights): ```--kd_model_path=...```
 - Training for more epochs (default - 300): ```--epochs=...```
 
 ## Speed-Accuracy Comparisons
