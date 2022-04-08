@@ -23,7 +23,8 @@ Since USI accepts any backbone and trains it to top results, it also enables to 
 ## How to Train on ImageNet with USI scheme
 The proposed USI scheme does not require hyper-parameter tuning. The base training configuration works well for any backbone.
 All the results presented in the paper are fully reproducible.
-First download model weights fromm [here](https://miil-public-eu.oss-eu-central-1.aliyuncs.com/model-zoo/USI/tresnet_l_v2_83_9.pth)
+
+First download teacher model weights from [here](https://miil-public-eu.oss-eu-central-1.aliyuncs.com/model-zoo/USI/tresnet_l_v2_83_9.pth)
 
 An example code - training ResNet50 model with USI:
 ```
