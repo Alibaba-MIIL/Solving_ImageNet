@@ -246,7 +246,7 @@ parser.add_argument('--bn-eps', type=float, default=None,
                     help='BatchNorm epsilon override (if not None)')
 parser.add_argument('--sync-bn', action='store_true',
                     help='Enable NVIDIA Apex or Torch synchronized BatchNorm.')
-parser.add_argument('--dist-bn', type=str, default='reduce',
+parser.add_argument('--dist-bn', type=str, default='',
                     help='Distribute BatchNorm stats between nodes after each epoch ("broadcast", "reduce", or "")')
 parser.add_argument('--split-bn', action='store_true',
                     help='Enable separate BN layers per augmentation split.')
