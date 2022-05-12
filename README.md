@@ -1,7 +1,7 @@
 # Solving ImageNet: a Unified Scheme for Training any Backbone to Top Results
 
 Official PyTorch Implementation
-<br> [Paper](http://arxiv.org/abs/2204.03475) |
+<br> [Paper](http://arxiv.org/abs/2204.03475) | [Model Zoo](MODEL_ZOO.md) | [Speed-Accuracy Comparisons](Speed_Accuracy_Comparisons.md) |
 > Tal Ridnik, Hussam Lawen, Emanuel Ben-Baruch, Asaf Noy<br/> DAMO Academy, Alibaba
 > Group
 
@@ -39,17 +39,6 @@ Some additional degrees of freedom that might be usefull:
 
 - Adjusting the batch size (defualt - 128): ```--batch-size=...```
 - Training for more epochs (default - 300): ```--epochs=...```
-
-## Speed-Accuracy Comparisons
-Our unified scheme allows us to perform methodical speed-accuracy comparisons, and identify efficient modern backbones on GPU and CPU
-
-<p align="center">
- <table class="tg">
-   <tr>
-    <td class="tg-c3ow"><img src="./pics/pic3.png" align="center" width="700""></td>
-  </tr>
-</table>
-</p>
 
 
 ## Acknowledgements
