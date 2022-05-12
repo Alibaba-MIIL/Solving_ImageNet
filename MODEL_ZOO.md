@@ -11,5 +11,5 @@ For those top models, we provide here weights from large-scale pretraining on Im
 **ResNet50** |[Link](https://miil-public-eu.oss-eu-central-1.aliyuncs.com/model-zoo/unified/resnet50/single_label_ls.pth) | [Link](https://miil-public-eu.oss-eu-central-1.aliyuncs.com/model-zoo/unified/resnet50/multi_label_ls.pth) | 81.0 |
 **MobileNetV3_Large_100** |[Link](https://miil-public-eu.oss-eu-central-1.aliyuncs.com/model-zoo/unified/mobilenetv3_large_100/single_label_ls.pth) | N/A | 77.3 |
 **LeViT-384** |[Link](https://miil-public-eu.oss-eu-central-1.aliyuncs.com/model-zoo/unified/levit_384/single_label_ls.pth) | [Link](https://miil-public-eu.oss-eu-central-1.aliyuncs.com/model-zoo/unified/levit_384/multi_label_ls.pth) | 82.7 |
-**LeViT-768** |[Link](TBD) | N/A  | [84.2](https://miil-public-eu.oss-eu-central-1.aliyuncs.com/model-zoo/unified/levit_768/levit_768_84_2.pth) |
+**LeViT-768** |[Link](https://miil-public-eu.oss-eu-central-1.aliyuncs.com/model-zoo/unified/levit_768/single_label_ls.pth) | N/A  | [84.2](https://miil-public-eu.oss-eu-central-1.aliyuncs.com/model-zoo/unified/levit_768/levit_768_84_2.pth) |
 
