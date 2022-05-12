@@ -1,8 +1,8 @@
 #  Model Zoo
 
-With USI, we were able to reliably identify models that provide [good speed-accuracy trade-off](Speed_Accuracy_Comparisons.md).
+With USI, we can reliably identify models that provide [good speed-accuracy trade-off](Speed_Accuracy_Comparisons.md).
 
-In addition to standart ImageNet-1K pretraining weights, we provide here weights from large-scale pretraining on ImageNet-21K. We recommended using the large-scale weights for transfer learning, they almost always provide superior results on transfer, compared to 1K weights.
+For those top models, we provide here weights from large-scale pretraining on ImageNet-21K. We recommended using the large-scale weights for transfer learning - they almost always provide superior results on transfer, compared to 1K weights.
 
 | Backbone  |  21K Single-label Pretraining weights | 21K Multi-label Pretraining weights |  ImageNet-1K Accurcy [\%] |
 | :------------: | :--------------: | :--------------: | :--------------: |
