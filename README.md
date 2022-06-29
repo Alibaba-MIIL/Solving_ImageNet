@@ -43,7 +43,7 @@ Some additional degrees of freedom that might be usefull:
 
 ## Acknowledgements
 
-The training code is based on the excellent [timm repository](https://github.com/rwightman/pytorch-image-models).
+The training code is based on the excellent [timm repository](https://github.com/rwightman/pytorch-image-models). Also, thanks [EdgeNeXt](https://arxiv.org/pdf/2206.10589.pdf) authors for sharing their model.
 
 ## Citation
 ```
