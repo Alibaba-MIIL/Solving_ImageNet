@@ -1,5 +1,0 @@
-timm==0.5.4
-torch>=1.9.0
-torchvision>=0.5.0
-pyyaml
-inplace-abn
